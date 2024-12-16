@@ -7,10 +7,11 @@ static void codegenAFFECT(ast* p);
 void codegen(ast*);
 void codegenINIT();
 
+extern int mem_res;
 int PILE=__PREMIERE_ADR__;
 
 void codegenINIT(){
-    PILE+=mem_res;
+    PILE;
 }
 
 void codegen(ast *p){
@@ -37,6 +38,8 @@ static void codegenNB(ast* p){
 }
 
 static void codegenOP(ast* p){
+    codegen(p->noeud[0]);
+    codegen(p->noeud[1]);
     DEPILER();
     fprintf(out,"STORE %d\n",__REG_TMP__);
     DEPILER();

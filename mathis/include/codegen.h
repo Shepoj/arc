@@ -10,7 +10,7 @@
 
 extern FILE * out; 
 extern ts TABSYMB;
-extern int mem_res;
+
 
 #define __PREMIERE_ADR__ 9
 #define __REG_TMP__ 1

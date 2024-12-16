@@ -10,10 +10,12 @@ int main(void){
     out=stdout;
     ajouter_id(TABSYMB,"lol");
     ajouter_id(TABSYMB,"mdr");
-    ast* p1=CreerFeuilleID("lol");
-    ast* p2=CreerFeuilleID("mdr");
+    ajouter_id(TABSYMB,"xd");
+    ast* p1=CreerFeuilleNB(3);
+    ast* p2=CreerFeuilleNB(4);
+    ast* p3=CreerNoeudOP('+',p1,p2);
+    ast* p4=CreerNoeudAffect("mdr",p3);
     codegenINIT();
-    codegen(p1);
-    codegen(p2);
+    codegen(p4);
     return 0;
 }

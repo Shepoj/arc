@@ -14,11 +14,9 @@ int chercher_id(ts tab_symb, char *id) { // Retourne la case ou se trouve id et 
 
 int ajouter_id(ts tab_symb, char *id) { // Ajouter l'id a la table si absent et renvoie la case en question et -1 si la table et pleine
     if (chercher_id(tab_symb, id) == -1) {
-        int i;
-        for (i = 0 ; i < mem_res ; i++);
         if (mem_res < 128){
-            strcpy(tab_symb[i].id, id);
-            tab_symb[i].adresse = mem_res;
+            strcpy(tab_symb[mem_res].id, id);
+            tab_symb[mem_res].adresse = mem_res;
             mem_res++;
         }
         else{
