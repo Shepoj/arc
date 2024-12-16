@@ -1,0 +1,6 @@
+MAIN()
+    VAR a;
+DEBUT
+    b<-3;
+    2*a;
+FIN
