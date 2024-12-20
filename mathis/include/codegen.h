@@ -2,6 +2,7 @@
 #define CODE_H
 #include "ast.h"
 #include "tabsymb.h"
+#include "semantic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +10,7 @@
 
 
 extern FILE * out; 
-extern ts TABSYMB;
+
 
 
 #define __PREMIERE_ADR__ 9

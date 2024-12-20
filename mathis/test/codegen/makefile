@@ -12,7 +12,7 @@ all: $(BIN)
 
 .PHONY: all test clean
 
-$(BIN): codegentest.c $(OBJDIR)/codegen.o $(INCDIR)/codegen.h $(OBJDIR)/ast.o $(OBJDIR)/tabsymb.o
+$(BIN): codegentest.c $(OBJDIR)/codegen.o $(INCDIR)/codegen.h $(OBJDIR)/ast.o $(OBJDIR)/tabsymb.o $(OBJDIR)/semantic.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c 

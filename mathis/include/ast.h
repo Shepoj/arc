@@ -21,6 +21,7 @@
     p->id[0] = '\0';        \
     p->noeud[0] = NULL;     \
     p->noeud[1] = NULL;			\
+    p->codelen = 0;         \
   }								          \
 
 enum {AST_NB = 256, AST_OP, AST_ID, AST_LINST, AST_AFFECT} ;
@@ -32,6 +33,7 @@ typedef struct ast{
   int op;
   char id[32];
   struct ast* noeud[2];
+  int codelen;
 } ast;
 
 

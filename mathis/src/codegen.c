@@ -1,5 +1,6 @@
 #include "codegen.h"
 
+
 static void codegenNB(ast* p);
 static void codegenOP(ast* p);
 static void codegenID(ast* p);
@@ -7,11 +8,12 @@ static void codegenAFFECT(ast* p);
 void codegen(ast*);
 void codegenINIT();
 
+extern ts TABSYMB;
 extern int mem_res;
 int PILE=__PREMIERE_ADR__;
 
 void codegenINIT(){
-    PILE;
+    PILE=mem_res+1;
 }
 
 void codegen(ast *p){
@@ -73,4 +75,13 @@ static void codegenAFFECT(ast* p){
     DEPILER();
     fprintf(out,"STORE %d\n",chercher_id(TABSYMB, p->id)+__PREMIERE_ADR__);
     EMPILER();
+}
+
+static void codegenTQ(ast* p){
+    codegen(p->noeud[0]);
+    semantic(p->noeud[0]);
+    semantic(p->noeud[1]);
+    fprintf(out,"JUMZ %d\n", p->noeud[0]->codelen + 1 + p->noeud[1]->codelen + 1); //les 2 +1 c jumz et jump
+    codegen(p->noeud[1]);
+    fprintf(out,"JUMP %d\n", p->noeud[0]->codelen);
 }
