@@ -18,10 +18,12 @@ extern FILE * out;
 
 #define EMPILER(){\
     fprintf(out,"STORE %d\n",PILE++);\
+    nb_inst++;\
 }
 
 #define DEPILER(){\
     fprintf(out,"LOAD %d\n",--PILE);\
+    nb_inst++;\
 }
 
 

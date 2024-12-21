@@ -5,6 +5,8 @@ static void PrintOP(ast *p, char * indent);
 static void PrintID(ast *p, char * indent);
 static void PrintLINST(ast *p, char * indent);
 static void PrintAFFECT(ast *p, char * indent);
+static void PrintTQ(ast *p, char * indent);
+static void PrintEQ(ast *p, char * indent);
 int profondeur = 0;
 
 ast * CreerFeuilleNB(int nb){
@@ -56,6 +58,26 @@ ast* CreerNoeudLINST(ast* p1, ast* p2){
   return p;
 }
 
+ast* CreerNoeudTQ(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_TQ;
+  strcpy(p->type_str,"TQ");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
+ast* CreerNoeudEQ(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_EQ;
+  strcpy(p->type_str,"EQ");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -85,6 +107,12 @@ void PrintAst(ast * p){
     break;
   case AST_AFFECT:
     PrintAFFECT(p,indent);
+    break;
+  case AST_TQ:
+    PrintTQ(p,indent);
+    break;
+  case AST_EQ:
+    PrintEQ(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -131,4 +159,22 @@ static void PrintID(ast *p, char *indent){
 static void PrintLINST(ast *p, char *indent){
   PrintAst(p->noeud[0]);
   PrintAst(p->noeud[1]);
+}
+
+static void PrintTQ(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintEQ(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
 }

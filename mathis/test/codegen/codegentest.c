@@ -4,22 +4,26 @@ ts TABSYMB;
 
 void codegen(ast*);
 void codegenINIT();
+void semantic(ast*);
 
 
 int main(void){
     out=stdout;
     ajouter_id(TABSYMB,"a");
-    ast* p1=CreerFeuilleNB(3);
-    ast* p2=CreerFeuilleNB(4);
-    ast* p5=CreerFeuilleNB(5);
-    ast* p3=CreerNoeudOP('+',p1,p2);
-    ast* p7=CreerNoeudOP('*',p3,p5);
-    ast* p4=CreerNoeudAffect("a",p7);
-    ast* p6=CreerNoeudAffect("b",p4);
+    ast *t1 = CreerNoeudAffect("a",CreerFeuilleNB(1));
+    ast * p1 = CreerFeuilleNB(1);
+    ast* p = CreerNoeudAffect("a",p1);
+    ast* p2 = CreerFeuilleNB(1);
+    ast* p3 = CreerNoeudOP('+',p,p2);
+    ast* p4 = CreerNoeudAffect("a",p3);
+    ast *p5 = CreerFeuilleNB(2);
+    ast *a = CreerFeuilleID("a");
+    ast *p6 = CreerNoeudEQ(a,p5);
+    ast* p7 = CreerNoeudTQ(p6,p4);
+    ast *p8 = CreerNoeudLINST(t1,p7);
     codegenINIT();
-    semantic(p6);
-    printf("%d",p6->codelen);
-    PrintAst(p6);
-    codegen(p6);
+    semantic(p8);
+    PrintAst(p8);
+    codegen(p8);
     return 0;
 }
