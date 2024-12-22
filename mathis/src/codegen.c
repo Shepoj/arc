@@ -8,6 +8,10 @@ static void codegenTQ(ast* p);
 static void codegenAFFECT(ast* p);
 static void codegenLINST(ast* p);
 static void codegenEQ(ast* p);
+static void codegenDIFF(ast* p);
+static void codegenSUP(ast* p);
+static void codegenINF(ast* p);
+
 void codegen(ast*);
 void codegenINIT();
 
@@ -101,6 +105,15 @@ void codegen(ast *p){
         case AST_EQ:
             codegenEQ(p);
             break;
+        case AST_DIFF:
+            codegenDIFF(p);
+            break;
+        case AST_SUP:
+            codegenSUP(p);
+            break;
+        case AST_INF:
+            codegenINF(p);
+            break;
     }
 }
 
@@ -171,6 +184,51 @@ static void codegenEQ(ast *p){
     DEPILER();
     add_inst(out,__SUB__,'\0',__REG_TMP__);
     add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
+    EMPILER();
+}
+
+static void codegenDIFF(ast* p){
+    codegen(p->noeud[0]);
+    EMPILER();
+    codegen(p->noeud[1]);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
+    DEPILER();
+    DEPILER();
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',1);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',0);
+    EMPILER();
+}
+
+static void codegenSUP(ast *p){
+    codegen(p->noeud[0]);
+    EMPILER();
+    codegen(p->noeud[1]);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
+    DEPILER();
+    DEPILER();
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUMG__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
+    EMPILER();
+}
+
+static void codegenINF(ast *p){
+    codegen(p->noeud[0]);
+    EMPILER();
+    codegen(p->noeud[1]);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
+    DEPILER();
+    DEPILER();
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUML__,'\0',nb_inst+3);
     add_inst(out,__LOAD__,'#',0);
     add_inst(out,__JUMP__,'\0',nb_inst+2);
     add_inst(out,__LOAD__,'#',1);

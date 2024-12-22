@@ -7,6 +7,9 @@ static void PrintLINST(ast *p, char * indent);
 static void PrintAFFECT(ast *p, char * indent);
 static void PrintTQ(ast *p, char * indent);
 static void PrintEQ(ast *p, char * indent);
+static void PrintDIFF(ast *p, char * indent);
+static void PrintSUP(ast *p, char * indent);
+static void PrintINF(ast *p, char * indent);
 int profondeur = 0;
 
 ast * CreerFeuilleNB(int nb){
@@ -78,6 +81,36 @@ ast* CreerNoeudEQ(ast* p1, ast* p2){
   return p;
 }
 
+ast* CreerNoeudDIFF(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_DIFF;
+  strcpy(p->type_str,"DIFF");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
+ast* CreerNoeudSUP(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_SUP;
+  strcpy(p->type_str,"SUP");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
+ast* CreerNoeudINF(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_INF;
+  strcpy(p->type_str,"INF");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -113,6 +146,15 @@ void PrintAst(ast * p){
     break;
   case AST_EQ:
     PrintEQ(p,indent);
+    break;
+  case AST_SUP:
+    PrintSUP(p,indent);
+    break;
+  case AST_INF:
+    PrintINF(p,indent);
+    break;
+  case AST_DIFF:
+    PrintDIFF(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -171,6 +213,33 @@ static void PrintTQ(ast *p, char *indent){
 }
 
 static void PrintEQ(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintSUP(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintINF(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintDIFF(ast *p, char *indent){
   printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
   printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
   profondeur++;
