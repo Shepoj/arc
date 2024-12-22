@@ -14,6 +14,9 @@ static void PrintSUPEGAL(ast *p, char * indent);
 static void PrintINFEGAL(ast *p, char * indent);
 static void PrintET(ast *p, char * indent);
 static void PrintOU(ast *p, char * indent);
+static void PrintNON(ast *p, char * indent);
+
+
 int profondeur = 0;
 
 ast * CreerFeuilleNB(int nb){
@@ -155,6 +158,15 @@ ast* CreerNoeudOU(ast * p1, ast * p2){
   return p;
 }
 
+ast* CreerNoeudNON(ast * t){
+  ast * p;
+  INIT_NOEUD(p);
+  p->type = AST_NON;
+  strcpy(p->type_str,"NON");
+  p->noeud[0] = t;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -211,6 +223,9 @@ void PrintAst(ast * p){
     break;
   case AST_OU:
     PrintOU(p,indent);
+    break;
+  case AST_NON:
+    PrintNON(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -337,5 +352,13 @@ static void PrintOU(ast *p, char *indent){
   profondeur++;
   PrintAst(p->noeud[0]);
   PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintNON(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
   profondeur--;
 }

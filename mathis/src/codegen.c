@@ -16,6 +16,7 @@ static void codegenSUPEGAL(ast* p);
 static void codegenINFEGAL(ast* p);
 static void codegenET(ast* p);
 static void codegenOU(ast* p);
+static void codegenNON(ast* p);
 
 void codegen(ast*);
 void codegenINIT();
@@ -130,6 +131,9 @@ void codegen(ast *p){
             break;
         case AST_OU:
             codegenOU(p);
+            break;
+        case AST_NON:
+            codegenNON(p);
             break;
     }
 }
@@ -306,5 +310,14 @@ static void codegenOU(ast *p){
     add_inst(out,__LOAD__,'#',1);
     add_inst(out,__JUMP__,'\0',nb_inst+2);
     add_inst(out,__LOAD__,'#',0);
+    EMPILER();
+}
+
+static void codegenNON(ast *p){
+    codegen(p->noeud[0]);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
     EMPILER();
 }

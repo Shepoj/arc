@@ -10,8 +10,7 @@ void semantic(ast*);
 int main(void){
     out=stdout;
     ast * p1 = CreerFeuilleNB(1);
-    ast * p2 = CreerFeuilleNB(0);
-    ast * p3 = CreerNoeudOU(p1,p2);
+    ast * p3 = CreerNoeudNON(p1);
     codegenINIT();
     semantic(p3);
     PrintAst(p3);
