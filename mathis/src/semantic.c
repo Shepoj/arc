@@ -33,5 +33,30 @@ void semantic(ast* p){
             semantic(p->noeud[1]);
             p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 6; //jumz et jump
             break;
+        case AST_DIFF:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 6; //jumz et jump
+            break;
+        case AST_SUP:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 6; //jumz et jump
+            break;
+        case AST_INF:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 6; //jumz et jump
+            break;
+        case AST_SUPEGAL:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 7; //jumz et jump
+            break;
+        case AST_INFEGAL:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 2*NB_INST_EMPILER + 2*NB_INST_DEPILER + 7; //jumz et jump
+            break;
     }
 }

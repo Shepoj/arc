@@ -10,6 +10,8 @@ static void PrintEQ(ast *p, char * indent);
 static void PrintDIFF(ast *p, char * indent);
 static void PrintSUP(ast *p, char * indent);
 static void PrintINF(ast *p, char * indent);
+static void PrintSUPEGAL(ast *p, char * indent);
+static void PrintINFEGAL(ast *p, char * indent);
 int profondeur = 0;
 
 ast * CreerFeuilleNB(int nb){
@@ -111,6 +113,26 @@ ast* CreerNoeudINF(ast* p1, ast* p2){
   return p;
 }
 
+ast* CreerNoeudSUPEGAL(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_SUPEGAL;
+  strcpy(p->type_str,"SUPEGAL");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
+ast* CreerNoeudINFEGAL(ast* p1, ast* p2){
+  ast* p;
+  INIT_NOEUD(p);
+  p->type = AST_INFEGAL;
+  strcpy(p->type_str,"INFEGAL");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -155,6 +177,12 @@ void PrintAst(ast * p){
     break;
   case AST_DIFF:
     PrintDIFF(p,indent);
+    break;
+  case AST_SUPEGAL:
+    PrintSUPEGAL(p,indent);
+    break;
+  case AST_INFEGAL:
+    PrintINFEGAL(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -240,6 +268,24 @@ static void PrintINF(ast *p, char *indent){
 }
 
 static void PrintDIFF(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintSUPEGAL(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  profondeur--;
+}
+
+static void PrintINFEGAL(ast *p, char *indent){
   printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
   printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
   profondeur++;

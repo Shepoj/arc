@@ -1,5 +1,6 @@
 #include "../include/codegen.h"
 
+static void add_inst(FILE * out, int inst, char prefixe, int reg);
 
 static void codegenNB(ast* p);
 static void codegenOP(ast* p);
@@ -11,6 +12,8 @@ static void codegenEQ(ast* p);
 static void codegenDIFF(ast* p);
 static void codegenSUP(ast* p);
 static void codegenINF(ast* p);
+static void codegenSUPEGAL(ast* p);
+static void codegenINFEGAL(ast* p);
 
 void codegen(ast*);
 void codegenINIT();
@@ -113,6 +116,12 @@ void codegen(ast *p){
             break;
         case AST_INF:
             codegenINF(p);
+            break;
+        case AST_SUPEGAL:
+            codegenSUPEGAL(p);
+            break;
+        case AST_INFEGAL:
+            codegenINFEGAL(p);
             break;
     }
 }
@@ -229,6 +238,38 @@ static void codegenINF(ast *p){
     DEPILER();
     add_inst(out,__SUB__,'\0',__REG_TMP__);
     add_inst(out,__JUML__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
+    EMPILER();
+}
+
+static void codegenSUPEGAL(ast *p){
+    codegen(p->noeud[0]);
+    EMPILER();
+    codegen(p->noeud[1]);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
+    DEPILER();
+    DEPILER();
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUMG__,'\0',nb_inst+4);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
+    EMPILER();
+}
+
+static void codegenINFEGAL(ast *p){
+    codegen(p->noeud[0]);
+    EMPILER();
+    codegen(p->noeud[1]);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
+    DEPILER();
+    DEPILER();
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUML__,'\0',nb_inst+4);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
     add_inst(out,__LOAD__,'#',0);
     add_inst(out,__JUMP__,'\0',nb_inst+2);
     add_inst(out,__LOAD__,'#',1);
