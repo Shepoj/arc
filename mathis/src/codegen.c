@@ -1,4 +1,4 @@
-#include "codegen.h"
+#include "../include/codegen.h"
 
 
 static void codegenNB(ast* p);
@@ -20,8 +20,60 @@ void codegenINIT(){
     PILE+=mem_res+1;
 }
 
-void add_inst(FILE * out, char * inst){
-    fprintf(out,"%s\n",inst);
+void add_inst(FILE * out, int inst, char prefixe, int reg){
+    switch(inst){
+        case __READ__:
+            fprintf(out,"%s %c%d\n","READ",prefixe, reg);
+            break;
+        case __WRITE__:
+            fprintf(out,"%s %c%d\n","WRITE",prefixe, reg);
+            break;
+        case __ADD__:
+            fprintf(out,"%s %c%d\n","ADD",prefixe, reg);
+            break;
+        case __SUB__:
+            fprintf(out,"%s %c%d\n","SUB",prefixe, reg);
+            break;
+        case __MUL__:
+            fprintf(out,"%s %c%d\n","MUL",prefixe, reg);
+            break;
+        case __DIV__:
+            fprintf(out,"%s %c%d\n","DIV",prefixe, reg);
+            break;
+        case __MOD__:
+            fprintf(out,"%s %c%d\n","MOD",prefixe, reg);
+            break;
+        case __JUMZ__:
+            fprintf(out,"%s %d\n","JUMZ", reg);
+            break;
+        case __JUMP__:
+            fprintf(out,"%s %d\n","JUMP", reg);
+            break;
+        case __JUML__:
+            fprintf(out,"%s %d\n","JUML", reg);
+            break;
+        case __JUMG__:
+            fprintf(out,"%s %d\n","JUMG", reg);
+            break;
+        case __LOAD__:
+            fprintf(out,"%s %c%d\n","LOAD",prefixe, reg);
+            break;
+        case __STORE__:
+            fprintf(out,"%s %c%d\n","STORE",prefixe, reg);
+            break;
+        case __INC__:
+            fprintf(out,"%s %d\n","INC", reg);
+            break;
+        case __DEC__:
+            fprintf(out,"%s %d\n","DEC", reg);
+            break;
+        case __STOP__:
+            fprintf(out,"%s\n","STOP");
+            break;
+        case __NOP__:
+            fprintf(out,"%s\n","NOP");
+            break; 
+    }
     nb_inst++;
 }
 
@@ -53,7 +105,7 @@ void codegen(ast *p){
 }
 
 static void codegenNB(ast* p){
-    fprintf(out,"LOAD #%d\n",p->valeur);
+    add_inst(out,__LOAD__,'#',p->valeur);
     EMPILER();
 }
 
@@ -61,47 +113,47 @@ static void codegenOP(ast* p){
     codegen(p->noeud[0]);
     codegen(p->noeud[1]);
     DEPILER();
-    fprintf(out,"STORE %d\n",__REG_TMP__);
+    add_inst(out,__STORE__, '\0',__REG_TMP__);
     DEPILER();
     switch(p->op){
         case '+':
-            fprintf(out,"ADD %d\n",__REG_TMP__);
+            add_inst(out,__ADD__,'\0',__REG_TMP__);
             break;
         case '-':
-            fprintf(out,"SUB %d\n",__REG_TMP__);
+            add_inst(out,__SUB__,'\0',__REG_TMP__);
             break;
         case '*':
-            fprintf(out,"MUL %d\n",__REG_TMP__);
+            add_inst(out,__MUL__,'\0',__REG_TMP__);
             break;
         case '/':
-            fprintf(out,"DIV %d\n",__REG_TMP__);
+            add_inst(out,__DIV__,'\0',__REG_TMP__);
             break;
         case '%':
-            fprintf(out,"MOD %d\n",__REG_TMP__);
+            add_inst(out,__MOD__,'\0',__REG_TMP__);
             break;
     }
     EMPILER();
 }
 
 static void codegenID(ast* p){
-    fprintf(out, "LOAD %d\n",chercher_id(TABSYMB,p->id)+__PREMIERE_ADR__);
+    add_inst(out,__LOAD__,'\0',chercher_id(TABSYMB,p->id)+__PREMIERE_ADR__);
     EMPILER();
 }
 
 static void codegenAFFECT(ast* p){
     codegen(p->noeud[0]);
     DEPILER();
-    fprintf(out,"STORE %d\n",chercher_id(TABSYMB, p->id)+__PREMIERE_ADR__);
+    add_inst(out,__STORE__,'\0',chercher_id(TABSYMB, p->id)+__PREMIERE_ADR__);
     EMPILER();
 }
 
 static void codegenTQ(ast* p){
+    int nbjump=nb_inst;
     codegen(p->noeud[0]);
-    semantic(p->noeud[0]);
-    semantic(p->noeud[1]);
-    fprintf(out,"JUMZ %d\n", p->noeud[0]->codelen + 1 + p->noeud[1]->codelen + 1); //les 2 +1 c jumz et jump 
+    int nbjumz=nb_inst+p->noeud[1]->codelen+2;
+    add_inst(out,__JUMZ__,'\0',nbjumz);
     codegen(p->noeud[1]);
-    fprintf(out,"JUMP %d\n", p->noeud[0]->codelen);
+    add_inst(out,__JUMP__,'\0',nbjump);
     EMPILER();
 }
 
@@ -114,13 +166,13 @@ static void codegenEQ(ast *p){
     codegen(p->noeud[0]);
     EMPILER();
     codegen(p->noeud[1]);
-    fprintf(out,"STORE %d\n",__REG_TMP__);
+    add_inst(out,__STORE__,'\0',__REG_TMP__);
     DEPILER();
     DEPILER();
-    fprintf(out,"SUB %d\n",__REG_TMP__);
-    fprintf(out,"JUMZ %d\n",(p->noeud[0]->codelen)+(p->noeud[1]->codelen)+NB_INST_EMPILER+2*NB_INST_DEPILER+5);
-    fprintf(out,"LOAD #0\n");
-    fprintf(out,"JUMP %d\n",(p->noeud[0]->codelen)+(p->noeud[1]->codelen)+NB_INST_EMPILER+2*NB_INST_DEPILER+6);
-    fprintf(out,"LOAD #1\n");
+    add_inst(out,__SUB__,'\0',__REG_TMP__);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',0);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',1);
     EMPILER();
 }

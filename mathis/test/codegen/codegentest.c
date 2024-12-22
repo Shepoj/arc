@@ -16,7 +16,7 @@ int main(void){
     ast* p2 = CreerFeuilleNB(1);
     ast* p3 = CreerNoeudOP('+',p,p2);
     ast* p4 = CreerNoeudAffect("a",p3);
-    ast *p5 = CreerFeuilleNB(2);
+    ast *p5 = CreerFeuilleNB(1);
     ast *a = CreerFeuilleID("a");
     ast *p6 = CreerNoeudEQ(a,p5);
     ast* p7 = CreerNoeudTQ(p6,p4);
