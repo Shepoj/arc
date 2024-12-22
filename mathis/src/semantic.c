@@ -72,5 +72,14 @@ void semantic(ast* p){
             semantic(p->noeud[0]);
             p->codelen = p->noeud[0]->codelen + NB_INST_EMPILER + 4; 
             break;
+        case AST_SI:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            if(p->noeud[2] != NULL)
+                semantic(p->noeud[2]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + 1 + NB_INST_EMPILER;
+            if(p->noeud[2] != NULL)
+                p->codelen += p->noeud[2]->codelen + 1;
+            break;
     }
 }

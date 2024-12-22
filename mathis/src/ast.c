@@ -15,6 +15,7 @@ static void PrintINFEGAL(ast *p, char * indent);
 static void PrintET(ast *p, char * indent);
 static void PrintOU(ast *p, char * indent);
 static void PrintNON(ast *p, char * indent);
+static void PrintSI(ast *p, char * indent);
 
 
 int profondeur = 0;
@@ -167,6 +168,17 @@ ast* CreerNoeudNON(ast * t){
   return p;
 }
 
+ast* CreerNoeudSI(ast * p1, ast * p2, ast * p3){
+  ast * p;
+  INIT_NOEUD(p);
+  p->type = AST_SI;
+  strcpy(p->type_str,"SI");
+  p->noeud[0] = p1;
+  p->noeud[1] = p2;
+  p->noeud[2] = p3;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -226,6 +238,9 @@ void PrintAst(ast * p){
     break;
   case AST_NON:
     PrintNON(p,indent);
+    break;
+  case AST_SI:
+    PrintSI(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -360,5 +375,16 @@ static void PrintNON(ast *p, char *indent){
   printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
   profondeur++;
   PrintAst(p->noeud[0]);
+  profondeur--;
+}
+
+static void PrintSI(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  if(p->noeud[2] != NULL)
+    PrintAst(p->noeud[2]);
   profondeur--;
 }
