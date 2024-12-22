@@ -14,6 +14,8 @@ static void codegenSUP(ast* p);
 static void codegenINF(ast* p);
 static void codegenSUPEGAL(ast* p);
 static void codegenINFEGAL(ast* p);
+static void codegenET(ast* p);
+static void codegenOU(ast* p);
 
 void codegen(ast*);
 void codegenINIT();
@@ -122,6 +124,12 @@ void codegen(ast *p){
             break;
         case AST_INFEGAL:
             codegenINFEGAL(p);
+            break;
+        case AST_ET:
+            codegenET(p);
+            break;
+        case AST_OU:
+            codegenOU(p);
             break;
     }
 }
@@ -273,5 +281,30 @@ static void codegenINFEGAL(ast *p){
     add_inst(out,__LOAD__,'#',0);
     add_inst(out,__JUMP__,'\0',nb_inst+2);
     add_inst(out,__LOAD__,'#',1);
+    EMPILER();
+}
+
+static void codegenET(ast *p){
+    codegen(p->noeud[0]);   
+    int nbjumz=p->noeud[1]->codelen+nb_inst+4;
+    add_inst(out,__JUMZ__,'\0',nbjumz);
+    codegen(p->noeud[1]);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',1);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',0);
+    EMPILER();
+}
+
+static void codegenOU(ast *p){
+    codegen(p->noeud[0]);
+    add_inst(out,__JUMZ__,'\0',nb_inst+2);
+    int nbjump=p->noeud[1]->codelen+nb_inst+2;
+    add_inst(out,__JUMP__,'\0',nbjump);
+    codegen(p->noeud[1]);
+    add_inst(out,__JUMZ__,'\0',nb_inst+3);
+    add_inst(out,__LOAD__,'#',1);
+    add_inst(out,__JUMP__,'\0',nb_inst+2);
+    add_inst(out,__LOAD__,'#',0);
     EMPILER();
 }
