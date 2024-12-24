@@ -338,3 +338,10 @@ static void codegenSI(ast *p){
     }
     EMPILER();
 }
+
+static void codegenFOR(ast* p){
+    int adresse=chercher_id(TABSYMB,p->noeud[0]->id);
+    codegen(p->noeud[0]);
+    int nbjump=nb_inst;
+    //je sais pas quoi faire lol
+}
