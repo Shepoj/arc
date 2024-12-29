@@ -39,7 +39,7 @@
 # define YY_YY_SRC_PARSER_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -58,9 +58,22 @@ extern int yydebug;
     ID = 259,                      /* ID  */
     VAR = 260,                     /* VAR  */
     FLECHE = 261,                  /* "<-"  */
-    MAIN = 262,                    /* MAIN  */
-    DEBUT = 263,                   /* DEBUT  */
-    FIN = 264                      /* FIN  */
+    DIFFERENT = 262,               /* "!="  */
+    INFERIEUR = 263,               /* "<="  */
+    SUPERIEUR = 264,               /* ">="  */
+    MAIN = 265,                    /* MAIN  */
+    DEBUT = 266,                   /* DEBUT  */
+    FIN = 267,                     /* FIN  */
+    TQ = 268,                      /* TQ  */
+    FAIRE = 269,                   /* FAIRE  */
+    FINTQ = 270,                   /* FINTQ  */
+    SI = 271,                      /* SI  */
+    ALORS = 272,                   /* ALORS  */
+    SINON = 273,                   /* SINON  */
+    FINSI = 274,                   /* FINSI  */
+    ET = 275,                      /* ET  */
+    OU = 276,                      /* OU  */
+    NON = 277                      /* NON  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -69,14 +82,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 23 "src/parser.y"
+#line 25 "src/parser.y"
 
   int nb;
   char id[32];
   struct ast* arbre;
  
 
-#line 80 "src/parser.h"
+#line 93 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

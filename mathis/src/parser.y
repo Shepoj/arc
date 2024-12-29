@@ -1,3 +1,5 @@
+%debug
+
 %{
   #include <stdio.h>
   #include <ctype.h>
@@ -26,6 +28,7 @@
   struct ast* arbre;
  };
 
+
 %define parse.error detailed
 %locations
 
@@ -39,6 +42,9 @@
 %token <id> ID
 %token VAR
 %token FLECHE "<-"
+%token DIFFERENT "!="
+%token INFERIEUR "<="
+%token SUPERIEUR ">="
 %token MAIN DEBUT FIN
 %token TQ FAIRE FINTQ
 %token SI ALORS SINON FINSI
@@ -48,7 +54,7 @@
 %right "<-"
 
 %left ET OU NON
-%left '=' "!=" "<" ">" "<=" ">="
+%left '=' "!=" '<' '>' "<=" ">="
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -61,10 +67,12 @@ PROGRAMME:
   DEBUT
     LINST  
   FIN                   { ARBRE_ABSTRAIT = $6; PrintAst(ARBRE_ABSTRAIT);}
-
+;
 
 INST : EXP';'           { $$ = $1;}
-| AFFECT                
+| AFFECT                { $$ = $1;}
+| TANTQUE               { $$ = $1;}
+| CONDITION             { $$ = $1;}
 ;
 
 LINST : INST            { $$ = CreerNoeudLINST($1, NULL);}
@@ -91,8 +99,8 @@ CONDITION :
     LINST
   FINSI                 {$$ = CreerNoeudSI($2,$4,$6);}
 | SI EXP ALORS
-  LINST
-FINSI                   {$$ = CreerNoeudSI($2,$4);}
+    LINST
+  FINSI                   {$$ = CreerNoeudSI($2,$4, NULL);}
 ;
 
 EXP : NB                {$$ = CreerFeuilleNB($1);}

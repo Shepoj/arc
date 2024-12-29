@@ -39,9 +39,21 @@ ID              ([_a-zA-Z][a-zA-Z0-9]*)
 "DEBUT"         {return DEBUT;}
 "FIN"           {return FIN;}
 "VAR"           {return VAR;}
+"TQ"            {return TQ;}
+"FAIRE"         {return FAIRE;}
+"FINTQ"         {return FINTQ;}
+"SI"            {return SI;}
+"ALORS"         {return ALORS;}
+"SINON"         {return SINON;}
+"FINSI"         {return FINSI;}
+"ET"            {return ET;}
+"OU"            {return OU;}
 "<-"            {return FLECHE;}
+"<="            {return INFERIEUR;}
+">="            {return SUPERIEUR;}
+"!="            {return DIFFERENT;}
 
-[-+*/%();]           {return yytext[0];}
+[-+*/%()<>=;]           {return yytext[0];}
 
 
 

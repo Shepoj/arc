@@ -22,6 +22,8 @@ static void codegenSI(ast* p);
 void codegen(ast*);
 void codegenINIT();
 
+
+FILE * out;
 extern ts TABSYMB;
 extern int mem_res;
 int PILE=__PREMIERE_ADR__;

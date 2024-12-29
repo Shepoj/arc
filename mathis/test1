@@ -1,6 +1,14 @@
 MAIN()
     VAR a;
+    VAR b;
 DEBUT
-    b<-3;
-    2*a;
+	a<-0;
+	TQ a<=5 FAIRE 
+		a<-a+1;
+	FINTQ
+	SI a=6 ALORS
+		b<-5;
+	SINON 
+		b<-6;
+	FINSI
 FIN

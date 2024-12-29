@@ -9,7 +9,7 @@
 
 
 
-extern FILE * out; 
+
 
 #define __READ__ 1
 #define __WRITE__ 2
