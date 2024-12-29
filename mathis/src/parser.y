@@ -5,8 +5,9 @@
   #include <ctype.h>
   #include <string.h>
   
-  #include "ast.h"
-  #include "tabsymb.h"
+  #include "ast.h"  
+  #include "semantic.h"
+  #include "codegen.h"
 
   extern int yylex();
   static void print_file_error(char * s, char *errmsg);
@@ -20,6 +21,7 @@
   char srcname[64];
   char exename[64] = "a.out";
   FILE * exefile;
+  FILE * out; 
 %}
 
 %union{
@@ -147,6 +149,11 @@ int main( int argc, char * argv[] ) {
   yyparse();
   print_table(TABSYMB);
   fclose(yyin);
+  out = exefile;
+  codegenINIT();
+  semantic(ARBRE_ABSTRAIT);
+  codegen(ARBRE_ABSTRAIT);
+  return 0;
 }
 
 
