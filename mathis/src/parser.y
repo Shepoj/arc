@@ -33,14 +33,23 @@
 %type <arbre> LINST
 %type <arbre> EXP
 %type <arbre> AFFECT
+%type <arbre> TANTQUE
+%type <arbre> CONDITION
 %token <nb> NB
 %token <id> ID
 %token VAR
 %token FLECHE "<-"
 %token MAIN DEBUT FIN
+%token TQ FAIRE FINTQ
+%token SI ALORS SINON FINSI
+
 %start PROGRAMME
 
 %right "<-"
+
+%left ET OU NON
+%left '=' "!=" "<" ">" "<=" ">="
+
 %left '+' '-'
 %left '*' '/' '%'
 
@@ -69,6 +78,23 @@ DECLA : %empty
 AFFECT : ID "<-" EXP';' { $$ = CreerNoeudAffect($1,$3);}
 ;
 
+TANTQUE : 
+  TQ EXP FAIRE
+    LINST
+  FINTQ                 { $$ = CreerNoeudTQ($2, $4);}
+;
+
+CONDITION :
+  SI EXP ALORS
+    LINST
+  SINON
+    LINST
+  FINSI                 {$$ = CreerNoeudSI($2,$4,$6);}
+| SI EXP ALORS
+  LINST
+FINSI                   {$$ = CreerNoeudSI($2,$4);}
+;
+
 EXP : NB                {$$ = CreerFeuilleNB($1);}
 | EXP '+' EXP           {$$ = CreerNoeudOP('+',$1,$3);}
 | EXP '-' EXP           {$$ = CreerNoeudOP('-',$1,$3);}
@@ -77,6 +103,15 @@ EXP : NB                {$$ = CreerFeuilleNB($1);}
 | EXP '%' EXP           {$$ = CreerNoeudOP('%',$1,$3);}
 | '('EXP')'             {$$ = $2;}
 | ID                    {$$ = CreerFeuilleID($1);}
+| EXP '=' EXP           {$$ = CreerNoeudEQ($1,$3);}
+| EXP "!=" EXP          {$$ = CreerNoeudDIFF($1,$3);}
+| EXP '<' EXP           {$$ = CreerNoeudINF($1,$3);}
+| EXP '>' EXP           {$$ = CreerNoeudSUP($1,$3);}
+| EXP "<=" EXP          {$$ = CreerNoeudINFEGAL($1,$3);}
+| EXP ">=" EXP          {$$ = CreerNoeudSUPEGAL($1,$3);}
+| EXP ET EXP            {$$ = CreerNoeudET($1,$3);}
+| EXP OU EXP            {$$ = CreerNoeudOU($1,$3);}
+| NON EXP               {$$ = CreerNoeudNON($2);}
 ;
 
 %%

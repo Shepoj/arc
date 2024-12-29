@@ -30,8 +30,9 @@ extern FILE * out;
 #define __NOP__ 17
 
 
-#define __PREMIERE_ADR__ 9
+#define __PREMIERE_ADR__ 10
 #define __REG_TMP__ 1
+#define __REG_TMP2__ 2
 
 #define EMPILER(){\
     fprintf(out,"STORE %d\n",PILE++);\

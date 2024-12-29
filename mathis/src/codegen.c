@@ -341,7 +341,14 @@ static void codegenSI(ast *p){
 
 static void codegenFOR(ast* p){
     int adresse=chercher_id(TABSYMB,p->noeud[0]->id);
-    codegen(p->noeud[0]);
+    codegen(p->noeud[1]);
     int nbjump=nb_inst;
-    //je sais pas quoi faire lol
+    codegen(p->noeud[2]);
+    int nbjumz=nb_inst+p->noeud[3]->codelen+00000000; //qqch;
+    add_inst(out,__JUMZ__,'\0',nbjumz);
+    codegen(p->noeud[3]);
+    add_inst(out,__LOAD__,'\0',__REG_TMP__);
+    add_inst(out, __SUB__, '\0', adresse); //peutetre # ici
+    add_inst(out, __STORE__, '\0', __REG_TMP2__);
+
 }
