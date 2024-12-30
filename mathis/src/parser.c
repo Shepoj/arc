@@ -90,7 +90,7 @@
   ts TABSYMB;
 
   char srcname[64];
-  char exename[64] = "a.out";
+  char exename[64] = "ram.txt";
   FILE * exefile;
 
 #line 97 "src/parser.c"
@@ -1942,7 +1942,7 @@ int main( int argc, char * argv[] ) {
   if (argc == 3){
     strcpy(exename, argv[2]);
   }
-  exefile = fopen(exename,"w");
+  exefile = fopen(exename,"a");
   INIT_NOEUD(ARBRE_ABSTRAIT);
   yyparse();
   print_table(TABSYMB);

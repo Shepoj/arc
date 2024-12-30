@@ -146,7 +146,7 @@ int main( int argc, char * argv[] ) {
   if (argc == 3){
     strcpy(exename, argv[2]);
   }
-  exefile = fopen(exename,"w");
+  exefile = fopen(exename,"a");
   INIT_NOEUD(ARBRE_ABSTRAIT);
   yyparse();
   print_table(TABSYMB);
