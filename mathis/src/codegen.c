@@ -22,8 +22,8 @@ static void codegenSI(ast* p);
 void codegen(ast*);
 void codegenINIT();
 
-
-extern FILE * out;
+extern FILE * exefile;
+FILE * out;
 extern ts TABSYMB;
 extern int mem_res;
 int PILE=__PREMIERE_ADR__;
@@ -31,7 +31,9 @@ static int nb_inst = 0;
 
 void codegenINIT(){
     PILE+=mem_res+1;
+    out = exefile;
 }
+
 
 void add_inst(FILE * out, int inst, char prefixe, int reg){
     switch(inst){

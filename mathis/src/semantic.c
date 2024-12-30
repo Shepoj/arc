@@ -20,8 +20,11 @@ void semantic(ast* p){
             break;
         case AST_LINST:
             semantic(p->noeud[0]);
-            semantic(p->noeud[1]);
-            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen;
+            p->codelen = p->noeud[0]->codelen;
+            if (p->noeud[1] != NULL){
+                semantic(p->noeud[1]);
+                p->codelen += p->noeud[1]->codelen;
+            }
             break;
         case AST_TQ:
             semantic(p->noeud[0]);

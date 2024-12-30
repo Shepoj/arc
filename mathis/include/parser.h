@@ -82,7 +82,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "src/parser.y"
+#line 29 "src/parser.y"
 
   int nb;
   char id[32];

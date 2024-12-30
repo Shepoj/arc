@@ -15,13 +15,15 @@
   struct ast * ARBRE_ABSTRAIT = NULL;
 
   void yyerror(const char * s);
+  void codegen(ast*);
+  void codegenINIT(); 
+  void semantic(ast*);
 
   ts TABSYMB;
 
   char srcname[64];
-  char exename[64] = "a.out";
+  char exename[64] = "ram.txt";
   FILE * exefile;
-  FILE * out; 
 %}
 
 %union{
@@ -148,12 +150,11 @@ int main( int argc, char * argv[] ) {
   INIT_NOEUD(ARBRE_ABSTRAIT);
   yyparse();
   print_table(TABSYMB);
-  fclose(yyin);
-  out = exefile;
   codegenINIT();
   semantic(ARBRE_ABSTRAIT);
   codegen(ARBRE_ABSTRAIT);
-  return 0;
+  fclose(yyin);
+  fclose(exefile);
 }
 
 
