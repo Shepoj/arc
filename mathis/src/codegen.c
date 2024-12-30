@@ -34,29 +34,56 @@ void codegenINIT(){
     out = exefile;
 }
 
-
 void add_inst(FILE * out, int inst, char prefixe, int reg){
     switch(inst){
         case __READ__:
-            fprintf(out,"%s %c%d\n","READ",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","READ",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","READ", reg);
+            }
             break;
         case __WRITE__:
-            fprintf(out,"%s %c%d\n","WRITE",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","WRITE",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","WRITE", reg);
+            }
             break;
         case __ADD__:
-            fprintf(out,"%s %c%d\n","ADD",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","ADD",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","ADD", reg);
+            }
             break;
         case __SUB__:
-            fprintf(out,"%s %c%d\n","SUB",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","SUB",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","SUB", reg);
+            }
             break;
         case __MUL__:
-            fprintf(out,"%s %c%d\n","MUL",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","MUL",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","MUL", reg);
+            }
             break;
         case __DIV__:
-            fprintf(out,"%s %c%d\n","DIV",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","DIV",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","DIV", reg);
+            }
             break;
         case __MOD__:
-            fprintf(out,"%s %c%d\n","MOD",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","MOD",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","MOD", reg);
+            }
             break;
         case __JUMZ__:
             fprintf(out,"%s %d\n","JUMZ", reg);
@@ -71,10 +98,18 @@ void add_inst(FILE * out, int inst, char prefixe, int reg){
             fprintf(out,"%s %d\n","JUMG", reg);
             break;
         case __LOAD__:
-            fprintf(out,"%s %c%d\n","LOAD",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","LOAD",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","LOAD", reg);
+            }
             break;
         case __STORE__:
-            fprintf(out,"%s %c%d\n","STORE",prefixe, reg);
+            if (prefixe!='\0'){
+                fprintf(out,"%s %c%d\n","STORE",prefixe, reg);
+            } else {
+                fprintf(out,"%s %d\n","STORE", reg);
+            }
             break;
         case __INC__:
             fprintf(out,"%s %d\n","INC", reg);
