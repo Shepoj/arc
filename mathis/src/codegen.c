@@ -1,4 +1,5 @@
 #include "../include/codegen.h"
+#include <string.h>
 
 static void add_inst(FILE * out, int inst, char prefixe, int reg);
 
@@ -18,6 +19,9 @@ static void codegenET(ast* p);
 static void codegenOU(ast* p);
 static void codegenNON(ast* p);
 static void codegenSI(ast* p);
+
+static void codegenFOR(ast* p);
+static void codegenDECLAFUNC(ast* p);
 
 void codegen(ast*);
 void codegenINIT();
@@ -390,4 +394,17 @@ static void codegenFOR(ast* p){
     add_inst(out, __SUB__, '\0', adresse); //peutetre # ici
     add_inst(out, __STORE__, '\0', __REG_TMP2__);
 
+} //plus tard ce soir c FONCTIONS !!!!
+
+
+static void codegenDECLAFUNC(ast* p){
+    if (strcmp(p->nom, "PROGRAMME")!=0){ //si cest pas le programme PROGRAMME
+        add_inst(out, __JUMP__, '\0', nb_inst+p->codelen);
+    }
+    codegen(p->noeud[0]);
+    codegen(p->noeud[1]);
+    if (strcmp(p->nom, "PROGRAMME")!=0){
+        add_inst(out, __STOP__, '\0', nb_inst-p->codelen);
+    }
 }
+
