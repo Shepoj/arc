@@ -20,10 +20,10 @@ Pour utiliser ARC, il faut d'abord exécuter le makefile (commande `make` à la 
 Les programmes en Algo doivent être écrits sous la forme :
 
     MAIN()
-	    [declaration de variable]
-	  DEBUT
-		  [liste d'instructions]
-		FIN
+	[declaration de variable]
+	DEBUT
+		[liste d'instructions]
+	FIN
 
 ## Fonctionnalités
 
