@@ -51,3 +51,6 @@ Les fonctionnalités implémentées sont :
 				a<-a+1;
 		FINPOUR
 
+# Suite
+
+Il aurait fallu que j'implémente les fonctions et les pointeurs mais par manque de temps, de courage, et d'énergie, j'ai décidé de me contenter d'une version édulcorée de ARC. L'analyse syntaxique des fonctions est effectuée, mais le code n'est pas généré.
