@@ -31,7 +31,9 @@ AST_ID, AST_LINST, AST_AFFECT,\
 AST_TQ, AST_EQ, AST_DIFF,\
 AST_INF, AST_SUP, AST_SUPEGAL,\
 AST_INFEGAL, AST_ET, AST_OU,\
-AST_NON, AST_SI, AST_FOR};
+AST_NON, AST_SI, AST_FOR, \
+AST_DECFUNC, AST_FUNC,\
+AST_MAIN};
 
 typedef struct ast{
   int  type;
@@ -78,6 +80,12 @@ ast* CreerNoeudNON(ast * p);
 ast* CreerNoeudSI(ast * p1, ast * p2, ast * p3);
 
 ast* CreerNoeudFOR(char* id, ast * p2, ast * p3, ast * p4);
+
+ast* CreerNoeudDECFUNC(ast * p1, ast * p2);
+
+ast* CreerNoeudFUNC(char* nom, ast * p1);
+
+ast* CreerNoeudMAIN(ast * p);
 
 void FreeAst(ast * p);
 

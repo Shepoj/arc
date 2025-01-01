@@ -62,22 +62,23 @@ extern int yydebug;
     INFERIEUR = 263,               /* "<="  */
     SUPERIEUR = 264,               /* ">="  */
     MAIN = 265,                    /* MAIN  */
-    DEBUT = 266,                   /* DEBUT  */
-    FIN = 267,                     /* FIN  */
-    TQ = 268,                      /* TQ  */
-    FAIRE = 269,                   /* FAIRE  */
-    FINTQ = 270,                   /* FINTQ  */
-    SI = 271,                      /* SI  */
-    ALORS = 272,                   /* ALORS  */
-    SINON = 273,                   /* SINON  */
-    FINSI = 274,                   /* FINSI  */
-    POUR = 275,                    /* POUR  */
-    DE = 276,                      /* DE  */
-    A = 277,                       /* A  */
-    FINPOUR = 278,                 /* FINPOUR  */
-    ET = 279,                      /* ET  */
-    OU = 280,                      /* OU  */
-    NON = 281                      /* NON  */
+    ALGO = 266,                    /* ALGO  */
+    DEBUT = 267,                   /* DEBUT  */
+    FIN = 268,                     /* FIN  */
+    TQ = 269,                      /* TQ  */
+    FAIRE = 270,                   /* FAIRE  */
+    FINTQ = 271,                   /* FINTQ  */
+    SI = 272,                      /* SI  */
+    ALORS = 273,                   /* ALORS  */
+    SINON = 274,                   /* SINON  */
+    FINSI = 275,                   /* FINSI  */
+    POUR = 276,                    /* POUR  */
+    DE = 277,                      /* DE  */
+    A = 278,                       /* A  */
+    FINPOUR = 279,                 /* FINPOUR  */
+    ET = 280,                      /* ET  */
+    OU = 281,                      /* OU  */
+    NON = 282                      /* NON  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -93,7 +94,7 @@ union YYSTYPE
   struct ast* arbre;
  
 
-#line 97 "src/parser.h"
+#line 98 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -35,6 +35,7 @@ ID              ([_a-zA-Z][a-zA-Z0-9]*)
 
 %%
 
+"ALGO"          {return ALGO; }
 "MAIN"          {return MAIN;}
 "DEBUT"         {return DEBUT;}
 "FIN"           {return FIN;}

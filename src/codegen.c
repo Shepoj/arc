@@ -184,6 +184,10 @@ void codegen(ast *p){
         case AST_FOR:
             codegenFOR(p);
             break;
+        case AST_MAIN:
+            codegen(p->noeud[0]);
+            add_inst(out,__STOP__,'\0',0);
+            break;
     }
 }
 

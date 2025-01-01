@@ -11,12 +11,15 @@ static void PrintDIFF(ast *p, char * indent);
 static void PrintSUP(ast *p, char * indent);
 static void PrintINF(ast *p, char * indent);
 static void PrintSUPEGAL(ast *p, char * indent);
-static void PrintINFEGAL(ast *p, char * indent);
+static void PrintINFEGAL(ast *p, char * indent); 
 static void PrintET(ast *p, char * indent);
 static void PrintOU(ast *p, char * indent);
 static void PrintNON(ast *p, char * indent);
 static void PrintSI(ast *p, char * indent);
 static void PrintFOR(ast *p, char * indent);
+static void PrintDECFUNC(ast *p, char * indent);
+static void PrintFUNC(ast *p, char * indent);
+static void PrintMAIN(ast *p, char * indent);
 
 
 int profondeur = 0;
@@ -192,6 +195,36 @@ ast* CreerNoeudFOR(char* id, ast * p2, ast * p3, ast * p4){
   return p;
 }
 
+ast* CreerNoeudDECFUNC(ast * p1, ast * p2){
+  ast * t;
+  INIT_NOEUD(t);
+  t->type = AST_DECFUNC;
+  strcpy(t->type_str,"DECFUNC");
+  t->noeud[0] = p1;
+  t->noeud[1] = p2;
+  return t;
+}
+
+ast* CreerNoeudFUNC(char * nom, ast * p){
+  ast * t;
+  INIT_NOEUD(t);
+  t->type = AST_FUNC;
+  strcpy(t->type_str,"FUNC");
+  strcpy(t->nom,nom);
+  t->noeud[0] = p;
+  return t;
+}
+
+
+ast* CreerNoeudMAIN(ast * p){
+  ast * t;
+  INIT_NOEUD(t);
+  t->type = AST_MAIN;
+  strcpy(t->type_str,"MAIN");
+  t->noeud[0] = p;
+  return t;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -257,6 +290,15 @@ void PrintAst(ast * p){
     break;
   case AST_FOR:
     PrintFOR(p,indent);
+    break;
+  case AST_DECFUNC:
+    PrintDECFUNC(p,indent);
+    break;
+  case AST_FUNC:
+    PrintFUNC(p,indent);
+    break;
+  case AST_MAIN:
+    PrintMAIN(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -414,4 +456,22 @@ static void PrintFOR(ast *p, char *indent){
   PrintAst(p->noeud[1]);
   PrintAst(p->noeud[2]);
   profondeur--;
+}
+
+static void PrintDECFUNC(ast *p, char *indent){
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+}
+
+static void PrintFUNC(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  printf("%s" TXT_BOLD "Nom:   " TXT_NULL "%s\n",indent, p->nom);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  profondeur--;
+}
+
+static void PrintMAIN(ast *p, char *indent){
+  PrintAst(p->noeud[0]);
 }

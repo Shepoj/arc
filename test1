@@ -1,3 +1,9 @@
+ALGO test(ok)
+	VAR x;
+DEBUT
+	x<-5;
+FIN
+
 MAIN()
     VAR a;
     VAR b;

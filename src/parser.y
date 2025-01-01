@@ -36,6 +36,11 @@
 %define parse.error detailed
 %locations
 
+%type <arbre> FONCTIONS
+%type <arbre> MAINFUNC
+%type <arbre> FONCTION
+%type <arbre> parametres
+
 %type <arbre> INST
 %type <arbre> LINST
 %type <arbre> EXP
@@ -43,6 +48,8 @@
 %type <arbre> TANTQUE
 %type <arbre> CONDITION
 %type <arbre> FORLOOP
+
+
 %token <nb> NB
 %token <id> ID
 %token VAR
@@ -50,7 +57,7 @@
 %token DIFFERENT "!="
 %token INFERIEUR "<="
 %token SUPERIEUR ">="
-%token MAIN DEBUT FIN
+%token MAIN ALGO DEBUT FIN
 %token TQ FAIRE FINTQ
 %token SI ALORS SINON FINSI
 %token POUR DE A FINPOUR
@@ -68,12 +75,32 @@
 %%
 
 PROGRAMME:
-  MAIN'('')'
-  DECLA
-  DEBUT
-    LINST  
-  FIN                   { ARBRE_ABSTRAIT = $6; PrintAst(ARBRE_ABSTRAIT);}
+  FONCTIONS           
+  MAINFUNC            { ARBRE_ABSTRAIT = $2; PrintAst($1); PrintAst(ARBRE_ABSTRAIT);}
 ;
+
+FONCTIONS:
+  FONCTION FONCTIONS  { $$ = CreerNoeudDECFUNC($1, $2);}
+| %empty              { $$ = NULL;}
+;
+
+
+
+FONCTION: 
+  ALGO ID'('parametres')'
+    DECLA
+    DEBUT
+      LINST
+    FIN                 { $$ = CreerNoeudFUNC($2, $8); }
+;
+
+MAINFUNC : 
+  MAIN'('')'
+    DECLA
+    DEBUT
+      LINST  
+    FIN                   { $$ = CreerNoeudMAIN($6); }
+;                       
 
 INST : EXP';'           { $$ = $1;}
 | AFFECT                { $$ = $1;}
@@ -133,6 +160,14 @@ EXP : NB                {$$ = CreerFeuilleNB($1);}
 | EXP ET EXP            {$$ = CreerNoeudET($1,$3);}
 | EXP OU EXP            {$$ = CreerNoeudOU($1,$3);}
 | NON EXP               {$$ = CreerNoeudNON($2);}
+;
+
+
+parametres:
+  ID                    { $$ = CreerFeuilleID($1);}
+| NB                    { $$ = CreerFeuilleNB($1);}
+| ID ',' parametres     { $$ = CreerNoeudLINST(CreerFeuilleID($1), $3);}
+| NB ',' parametres     { $$ = CreerNoeudLINST(CreerFeuilleNB($1), $3);}
 ;
 
 %%
