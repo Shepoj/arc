@@ -22,7 +22,6 @@
     p->noeud[0] = NULL;     \
     p->noeud[1] = NULL;			\
     p->noeud[2] = NULL;			\
-    p->noeud[3] = NULL;			\
     p->codelen = 0;         \
     p->nom[0] = '\0';       \
   }								          \
@@ -32,7 +31,7 @@ AST_ID, AST_LINST, AST_AFFECT,\
 AST_TQ, AST_EQ, AST_DIFF,\
 AST_INF, AST_SUP, AST_SUPEGAL,\
 AST_INFEGAL, AST_ET, AST_OU,\
-AST_NON, AST_SI};
+AST_NON, AST_SI, AST_FOR};
 
 typedef struct ast{
   int  type;
@@ -77,6 +76,8 @@ ast* CreerNoeudOU(ast * p1, ast * p2);
 ast* CreerNoeudNON(ast * p);
 
 ast* CreerNoeudSI(ast * p1, ast * p2, ast * p3);
+
+ast* CreerNoeudFOR(char* id, ast * p2, ast * p3, ast * p4);
 
 void FreeAst(ast * p);
 

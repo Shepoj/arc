@@ -84,5 +84,12 @@ void semantic(ast* p){
             if(p->noeud[2] != NULL)
                 p->codelen += p->noeud[2]->codelen + 1;
             break;
+        case AST_FOR:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            semantic(p->noeud[2]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + p->noeud[2]->codelen + 5;
+            break;
+        
     }
 }

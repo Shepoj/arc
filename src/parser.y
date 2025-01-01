@@ -42,6 +42,7 @@
 %type <arbre> AFFECT
 %type <arbre> TANTQUE
 %type <arbre> CONDITION
+%type <arbre> FORLOOP
 %token <nb> NB
 %token <id> ID
 %token VAR
@@ -52,6 +53,7 @@
 %token MAIN DEBUT FIN
 %token TQ FAIRE FINTQ
 %token SI ALORS SINON FINSI
+%token POUR DE A FINPOUR
 
 %start PROGRAMME
 
@@ -77,6 +79,7 @@ INST : EXP';'           { $$ = $1;}
 | AFFECT                { $$ = $1;}
 | TANTQUE               { $$ = $1;}
 | CONDITION             { $$ = $1;}
+| FORLOOP               { $$ = $1;}
 ;
 
 LINST : INST            { $$ = CreerNoeudLINST($1, NULL);}
@@ -105,6 +108,12 @@ CONDITION :
 | SI EXP ALORS
     LINST
   FINSI                   {$$ = CreerNoeudSI($2,$4, NULL);}
+;
+
+FORLOOP :
+  POUR ID DE EXP A EXP FAIRE
+    LINST
+  FINPOUR                {$$ = CreerNoeudFOR($2,$4,$6,$8);}
 ;
 
 EXP : NB                {$$ = CreerFeuilleNB($1);}

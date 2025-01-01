@@ -16,6 +16,7 @@ static void PrintET(ast *p, char * indent);
 static void PrintOU(ast *p, char * indent);
 static void PrintNON(ast *p, char * indent);
 static void PrintSI(ast *p, char * indent);
+static void PrintFOR(ast *p, char * indent);
 
 
 int profondeur = 0;
@@ -179,6 +180,18 @@ ast* CreerNoeudSI(ast * p1, ast * p2, ast * p3){
   return p;
 }
 
+ast* CreerNoeudFOR(char* id, ast * p2, ast * p3, ast * p4){
+  ast * p;
+  INIT_NOEUD(p);
+  p->type = AST_FOR;
+  strcpy(p->type_str,"FOR");
+  strcpy(p->id,id);
+  p->noeud[0] = p2;
+  p->noeud[1] = p3;
+  p->noeud[2] = p4;
+  return p;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -241,6 +254,9 @@ void PrintAst(ast * p){
     break;
   case AST_SI:
     PrintSI(p,indent);
+    break;
+  case AST_FOR:
+    PrintFOR(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -386,5 +402,16 @@ static void PrintSI(ast *p, char *indent){
   PrintAst(p->noeud[1]);
   if(p->noeud[2] != NULL)
     PrintAst(p->noeud[2]);
+  profondeur--;
+}
+
+static void PrintFOR(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  printf("%s" TXT_BOLD "Identificateur:   " TXT_NULL "%s\n",indent, p->id);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  PrintAst(p->noeud[1]);
+  PrintAst(p->noeud[2]);
   profondeur--;
 }

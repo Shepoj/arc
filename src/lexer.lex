@@ -46,6 +46,10 @@ ID              ([_a-zA-Z][a-zA-Z0-9]*)
 "ALORS"         {return ALORS;}
 "SINON"         {return SINON;}
 "FINSI"         {return FINSI;}
+"POUR"          {return POUR;}
+"DE"            {return DE;}
+"A"             {return A;}
+"FINPOUR"       {return FINPOUR;}
 "ET"            {return ET;}
 "OU"            {return OU;}
 "<-"            {return FLECHE;}

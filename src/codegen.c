@@ -19,9 +19,8 @@ static void codegenET(ast* p);
 static void codegenOU(ast* p);
 static void codegenNON(ast* p);
 static void codegenSI(ast* p);
-
 static void codegenFOR(ast* p);
-static void codegenDECLAFUNC(ast* p);
+
 
 void codegen(ast*);
 void codegenINIT();
@@ -181,6 +180,9 @@ void codegen(ast *p){
             break;
         case AST_SI:
             codegenSI(p);
+            break;
+        case AST_FOR:
+            codegenFOR(p);
             break;
     }
 }
@@ -383,28 +385,16 @@ static void codegenSI(ast *p){
 }
 
 static void codegenFOR(ast* p){
-    int adresse=chercher_id(TABSYMB,p->noeud[0]->id);
-    codegen(p->noeud[1]);
-    int nbjump=nb_inst;
-    codegen(p->noeud[2]);
-    int nbjumz=nb_inst+p->noeud[3]->codelen+00000000; //qqch;
-    add_inst(out,__JUMZ__,'\0',nbjumz);
-    codegen(p->noeud[3]);
-    add_inst(out,__LOAD__,'\0',__REG_TMP__);
-    add_inst(out, __SUB__, '\0', adresse); //peutetre # ici
-    add_inst(out, __STORE__, '\0', __REG_TMP2__);
-
-} //plus tard ce soir c FONCTIONS !!!!
-
-
-static void codegenDECLAFUNC(ast* p){
-    if (strcmp(p->nom, "PROGRAMME")!=0){ //si cest pas le programme PROGRAMME
-        add_inst(out, __JUMP__, '\0', nb_inst+p->codelen);
-    }
+    int adresse=chercher_id(TABSYMB,p->id);
     codegen(p->noeud[0]);
+    add_inst(out,__STORE__,'\0',adresse+__PREMIERE_ADR__);
+    int nbjump=nb_inst;
     codegen(p->noeud[1]);
-    if (strcmp(p->nom, "PROGRAMME")!=0){
-        add_inst(out, __STOP__, '\0', nb_inst-p->codelen);
-    }
-}
+    add_inst(out,__SUB__,'\0',adresse+__PREMIERE_ADR__);
+    add_inst(out,__JUMZ__,'\0',nb_inst+p->noeud[2]->codelen+3);
+    codegen(p->noeud[2]);
+    add_inst(out,__INC__,'\0',adresse+__PREMIERE_ADR__);
+    add_inst(out,__JUMP__,'\0',nbjump);
+} //plus tard ce soir c FONCTIONS !!!! 
+
 
