@@ -20,6 +20,7 @@ static void codegenOU(ast* p);
 static void codegenNON(ast* p);
 static void codegenSI(ast* p);
 static void codegenFOR(ast* p);
+static void codegenNEG(ast* p);
 
 
 void codegen(ast*);
@@ -187,6 +188,9 @@ void codegen(ast *p){
         case AST_MAIN:
             codegen(p->noeud[0]);
             add_inst(out,__STOP__,'\0',0);
+            break;
+        case AST_NEG:
+            codegenNEG(p);
             break;
     }
 }
@@ -394,11 +398,16 @@ static void codegenFOR(ast* p){
     add_inst(out,__STORE__,'\0',adresse+__PREMIERE_ADR__);
     int nbjump=nb_inst;
     codegen(p->noeud[1]);
-    add_inst(out,__SUB__,'\0',adresse+__PREMIERE_ADR__);
-    add_inst(out,__JUMZ__,'\0',nb_inst+p->noeud[2]->codelen+3);
+    add_inst(out,__SUB__,'\0',adresse+__PREMIERE_ADR__); 
+    int nbjumz=nb_inst+p->noeud[2]->codelen+3;
+    add_inst(out,__JUMZ__,'\0',nbjumz);
     codegen(p->noeud[2]);
     add_inst(out,__INC__,'\0',adresse+__PREMIERE_ADR__);
     add_inst(out,__JUMP__,'\0',nbjump);
 } //plus tard ce soir c FONCTIONS !!!! 
 
-
+static void codegenNEG(ast *p){
+    codegen(p->noeud[0]);
+    add_inst(out,__SUB__,'\0',0);
+    EMPILER();
+}

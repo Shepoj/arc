@@ -1,0 +1,11 @@
+ALGO myFunction(a, 5) 
+VAR x;
+DEBUT
+    x<-5;
+FIN
+
+MAIN()
+VAR a;
+DEBUT
+    a<-1;
+FIN

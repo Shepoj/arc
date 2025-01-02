@@ -53,12 +53,13 @@ ID              ([_a-zA-Z][a-zA-Z0-9]*)
 "FINPOUR"       {return FINPOUR;}
 "ET"            {return ET;}
 "OU"            {return OU;}
+"NON"           {return NON;}
 "<-"            {return FLECHE;}
 "<="            {return INFERIEUR;}
 ">="            {return SUPERIEUR;}
 "!="            {return DIFFERENT;}
 
-[-+*/%()<>=;]           {return yytext[0];}
+[-+*/%()<>=;,]           {return yytext[0];}
 
 
 

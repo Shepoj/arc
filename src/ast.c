@@ -20,6 +20,7 @@ static void PrintFOR(ast *p, char * indent);
 static void PrintDECFUNC(ast *p, char * indent);
 static void PrintFUNC(ast *p, char * indent);
 static void PrintMAIN(ast *p, char * indent);
+static void PrintNEG(ast *p, char * indent);
 
 
 int profondeur = 0;
@@ -225,6 +226,15 @@ ast* CreerNoeudMAIN(ast * p){
   return t;
 }
 
+ast * CreerNoeudNEG(ast * p){
+  ast * t;
+  INIT_NOEUD(t);
+  t->type = AST_NEG;
+  strcpy(t->type_str,"NEG");
+  t->noeud[0] = p;
+  return t;
+}
+
 void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
@@ -300,6 +310,9 @@ void PrintAst(ast * p){
     break;
   case AST_MAIN:
     PrintMAIN(p,indent);
+    break;
+  case AST_NEG:
+    PrintNEG(p,indent);
     break;
   default:
     fprintf(stderr,"[Erreur] type <%d>: %s non reconnu\n",p->type,p->type_str);
@@ -459,6 +472,14 @@ static void PrintFOR(ast *p, char *indent){
   profondeur--;
 }
 
+static void PrintNEG(ast *p, char *indent){
+  printf("%s" TXT_BOLD TXT_BLUE "Noeud:  " TXT_NULL "%p\n",indent, p);
+  printf("%s" TXT_BOLD "Type:   " TXT_NULL "%s\n",indent, p->type_str);
+  profondeur++;
+  PrintAst(p->noeud[0]);
+  profondeur--;
+}
+
 static void PrintDECFUNC(ast *p, char *indent){
   PrintAst(p->noeud[0]);
   PrintAst(p->noeud[1]);
@@ -476,3 +497,4 @@ static void PrintFUNC(ast *p, char *indent){
 static void PrintMAIN(ast *p, char *indent){
   PrintAst(p->noeud[0]);
 }
+

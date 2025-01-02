@@ -1,0 +1,7 @@
+MAIN()
+VAR a;
+VAR b;
+DEBUT
+    a<-(1=2 OU 6*2>=12) ET (NON 9+9=18);
+    b<-(1=2 OU 6*2>=12) ET 9+9=18;
+FIN

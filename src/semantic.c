@@ -4,10 +4,10 @@ void semantic(ast* p){
     if(p==NULL)return;
     switch(p->type){
         case AST_NB:
-            p->codelen = 2;
+            p->codelen = 1 + NB_INST_EMPILER;
             break;
         case AST_ID:
-            p->codelen = 2;
+            p->codelen = 1 + NB_INST_EMPILER;
             break;
         case AST_OP:
             semantic(p->noeud[0]);
@@ -90,6 +90,18 @@ void semantic(ast* p){
             semantic(p->noeud[2]);
             p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen + p->noeud[2]->codelen + 5;
             break;
-        
+        case AST_MAIN:
+            semantic(p->noeud[0]);
+            p->codelen = p->noeud[0]->codelen + 1;
+            break;
+        case AST_NEG:
+            semantic(p->noeud[0]);
+            p->codelen = p->noeud[0]->codelen + 1 + NB_INST_EMPILER;
+            break;
+        case AST_DECFUNC:
+            semantic(p->noeud[0]);
+            semantic(p->noeud[1]);
+            p->codelen = p->noeud[0]->codelen + p->noeud[1]->codelen;
+            break;
     }
 }

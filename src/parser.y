@@ -65,6 +65,7 @@
 %start PROGRAMME
 
 %right "<-"
+%right NEG
 
 %left ET OU NON
 %left '=' "!=" '<' '>' "<=" ">="
@@ -149,6 +150,7 @@ EXP : NB                {$$ = CreerFeuilleNB($1);}
 | EXP '*' EXP           {$$ = CreerNoeudOP('*',$1,$3);}
 | EXP '/' EXP           {$$ = CreerNoeudOP('/',$1,$3);}
 | EXP '%' EXP           {$$ = CreerNoeudOP('%',$1,$3);}
+| '-' EXP  %prec NEG    {$$ = CreerNoeudNEG($2);}
 | '('EXP')'             {$$ = $2;}
 | ID                    {$$ = CreerFeuilleID($1);}
 | EXP '=' EXP           {$$ = CreerNoeudEQ($1,$3);}

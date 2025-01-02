@@ -1,0 +1,11 @@
+MAIN()
+VAR a;
+VAR b;
+DEBUT
+    a<-5*5;
+    SI a=30 ALORS
+        b<-6;
+    SINON
+        b<-5;
+    FINSI
+FIN

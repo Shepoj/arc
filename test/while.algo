@@ -1,0 +1,11 @@
+MAIN()
+VAR a;
+VAR b;
+DEBUT
+    a<- -1;
+    b<-0;
+    TQ a<=4 FAIRE
+        b<-b+2;
+        a<-a+1;
+    FINTQ
+FIN

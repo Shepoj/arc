@@ -1,0 +1,9 @@
+MAIN()
+VAR a;
+VAR b;
+DEBUT
+    b<-0;
+    POUR a DE 0 A 5 FAIRE
+        b<-b+2;
+    FINPOUR
+FIN

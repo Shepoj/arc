@@ -1,0 +1,89 @@
+\documentclass[a4paper,12pt]{article}
+
+
+\title{Rapport de Projet : ARC - Algo/RAM Compiler}
+\author{Joseph REGNAULT}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+Ce rapport présente le travail effectué sur le projet ARC (Algo RAM Compiler). Il abordera les points importants de la réalisation du projet, des informations sur les choix effectués pendant l'écriture du compilateur, ainsi que les limitations du logiciel.
+
+\section{Structure et Fonctionnement du Programme}
+
+\subsection{Architecture Générale}
+Le compilateur fonctionne en plusieurs étapes :
+\begin{itemize}
+    \item \textbf{Analyse Lexicale} : Transformation du code source en une suite de tokens.
+    \item \textbf{Analyse Syntaxique} : Construction d'un arbre syntaxique abstrait (AST) à partir des tokens et de la grammaire.
+    \item \textbf{Analyse Sémantique} : Vérification des types et du respect des règles du langage.
+    \item \textbf{Génération de Code} : Production de code RAM à partir de l'AST.
+\end{itemize}
+
+\subsection{Fonctionnement}
+L'analyse lexicale est gérée par flex, l'analyse syntaxique par Bison, et les deux autres étapes sont implémentées en C.
+
+\section{Structure de la Mémoire}
+
+\subsection{Modèle RAM}
+La machine RAM n'étant composée que de l'accumulateur, d'une mémoire programme, et d'une mémoire de travail linéaire ne pouvant stocker que des entiers, il est nécessaire de s'organiser afin d'implémenter des structures plus complexes.
+
+\subsection{Organisation Mémoire}
+Notre compilateur utilisera une organisation mémoire simple composée de l'accumulateur, d'une zone de registres temporaires nécessaires pour certaines opérations, d'une zone mémoire dédiée au stockage des variables, et d'une pile.
+
+\section{Caractéristiques du Compilateur et du Langage Reconnu}
+
+\subsection{Langage Reconnu}
+Le compilateur reconnaît les éléments suivants du langage Algo :
+\begin{itemize}
+    \item Affectation de variables (entières).
+    \item Structures de contrôle (\texttt{if}, \texttt{while}, \texttt{for}).
+    \item Fonctions (déclaration uniquement).
+    \item Opérations arithmétiques.
+    \item Opréations logiques.
+\end{itemize}
+
+\subsection{Limitations}
+Les limitations actuelles incluent :
+\begin{itemize}
+    \item Pas de gestion des pointeurs/tableaux.
+    \item Pas de différence de contexte pour les variables locales/globales
+    \item Pas de génération de code pour les fonctions autres que MAIN.
+\end{itemize}
+
+\section{Choix de Conception}
+
+\subsection{Choix de la Grammaire}
+La grammaire utilisée est une grammaire simple décrivant le langage algorithmique. Elle ne permet pas de déclarer de variables globales, donc toutes les variables sont globales par défaut.
+
+\subsection{Modularité du Programme}
+Chaque étape du compilateur est encapsulée dans un module distinct. 
+\begin{itemize}
+    \item Le module d'analyse syntaxique utilise Bison et C pour générer les AST correspondants au code.
+    \item Le module traitant la table de symboles utilise une structure de données appelée \texttt{tabsymb} afin de gérer les variables et leurs adresses.
+    \item Le module de génération de code est organisé en une série de fonctions traitant les différents types de nœuds de l'AST.
+\end{itemize}
+
+
+\section{Limitations et Améliorations Futures}
+
+\subsection{Limitations Identifiées}
+\begin{itemize}
+    \item La gestion des fonctions est partielle : bien que la grammaire les reconnaisse et que leurs variables soient bien répertoriées dans la table des symboles, le compilateur ne génère pas de code pour leur exécution.
+    \item Les structures de données d'adressage comme les pointeurs ou les tableaux ne sont pas implémentées.
+\end{itemize}
+
+\section{Informations supplémentaires}
+Plusieurs fichiers de test se trouvent dans le répertoire \texttt{test/} présentant les fonctionnalités du compilateur. Chaque élément est introduit dans un fichier éponyme, et d'autres fichiers contiennent divers tests non spécifiques. 
+
+\section{Conclusion}
+Ce projet a permis de développer un compilateur semi-fonctionnel pour une version simplifiée du langage Algo. Bien qu'il soit limité, le programme produit du code fonctionnel pour la machine RAM.
+
+\end{document}

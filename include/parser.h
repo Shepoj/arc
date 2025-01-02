@@ -76,9 +76,10 @@ extern int yydebug;
     DE = 277,                      /* DE  */
     A = 278,                       /* A  */
     FINPOUR = 279,                 /* FINPOUR  */
-    ET = 280,                      /* ET  */
-    OU = 281,                      /* OU  */
-    NON = 282                      /* NON  */
+    NEG = 280,                     /* NEG  */
+    ET = 281,                      /* ET  */
+    OU = 282,                      /* OU  */
+    NON = 283                      /* NON  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -94,7 +95,7 @@ union YYSTYPE
   struct ast* arbre;
  
 
-#line 98 "src/parser.h"
+#line 99 "src/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

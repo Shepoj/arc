@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "codegen.h": "c",
-        "*.y": "bison"
+        "*.y": "bison",
+        "semantic.h": "c"
     }
 }

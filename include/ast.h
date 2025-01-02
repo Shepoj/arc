@@ -33,7 +33,7 @@ AST_INF, AST_SUP, AST_SUPEGAL,\
 AST_INFEGAL, AST_ET, AST_OU,\
 AST_NON, AST_SI, AST_FOR, \
 AST_DECFUNC, AST_FUNC,\
-AST_MAIN};
+AST_MAIN, AST_NEG};
 
 typedef struct ast{
   int  type;
@@ -86,6 +86,8 @@ ast* CreerNoeudDECFUNC(ast * p1, ast * p2);
 ast* CreerNoeudFUNC(char* nom, ast * p1);
 
 ast* CreerNoeudMAIN(ast * p);
+
+ast * CreerNoeudNEG(ast * p);
 
 void FreeAst(ast * p);
 

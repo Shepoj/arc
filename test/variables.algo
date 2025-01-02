@@ -1,0 +1,9 @@
+MAIN()
+VAR a;
+VAR b;
+VAR c;
+DEBUT
+    a<-10;
+    b<-5;
+    c<-a+b;
+FIN
