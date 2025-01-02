@@ -229,6 +229,7 @@ void FreeAst(ast * p){
   if (p == NULL) return;
   FreeAst(p->noeud[0]);
   FreeAst(p->noeud[1]);
+  FreeAst(p->noeud[2]);
   free(p);
 }
 
