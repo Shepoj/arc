@@ -1,6 +1,6 @@
 # ARC - Algo RAM Compiler
 
-ARC est un compilateur de langage Algorithmique vers Machine RAM réalisé dans le cadre de la SAÉ de L3. Il reste très sommaire et pourrait être grandement amélioré mais la deadline est dans trop peu de temps (j'y reviendrai peut-être qui sait) 
+ARC est un compilateur de langage Algorithmique vers Machine RAM. Il reste très sommaire et pourrait être grandement amélioré mais j'ai pas trop le temps (j'y reviendrai peut-être qui sait) 
 
 
 # Arborescence
@@ -9,7 +9,7 @@ Les fichiers source se trouvent dans /src/, et sont liés aux fichiers dans /inc
 ## Ce que j'ai fait/pas fait
 
 Certains trucs valent pas le coup d'être lus (les fichiers générés par flex et bison) : /src/parser.c , /src/lexer.c
-Le reste a été codé par moi (à l'exception de tabsymb.c/h qui m'ont été fournis par Mathis) 
+Le reste a été codé par moi.
 
 # Fonctionnement
 
